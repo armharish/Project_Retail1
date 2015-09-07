@@ -1,0 +1,74 @@
+package com.cts.retail.jdbc;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Properties;
+
+import com.cts.retail.properties.PropertiesSetUp;
+import com.mysql.jdbc.Connection;
+
+public class LoadDataCsvToTable {
+
+	public LoadDataCsvToTable() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public boolean loadCSVFileToTable(String propFileName, String fileName, String tableName) throws SQLException{
+		
+
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		
+		// TODO Auto-generated method stub
+		PropertiesSetUp prop1= new PropertiesSetUp();
+		Properties prop = prop1.loadPropertiesFile(propFileName);
+		DBConnectUtils utils = new DBConnectUtils(prop.getProperty("DB_TYPE"));
+		
+		System.out.println("Loading Properties");
+		utils=utils.loadConnectionProperties("config.properties");
+		
+		System.out.println("Displaying loaded Properties");
+		utils.displayConnectionProperties();
+		
+		con= (Connection) utils.dbEstablishConnection();
+
+		try {
+			String loadQuery  = "LOAD DATA LOCAL INFILE " + " '"  + fileName + "' " + " INTO TABLE " + tableName + " FIELDS TERMINATED BY '|' " + " LINES TERMINATED BY '\n'  " + prop.getProperty(tableName);
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(loadQuery);
+			
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+				e1.printStackTrace();
+				return false;
+		} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				return false;
+		} finally{
+			       rs.close();
+			       stmt.close();
+			       con.close();
+		}
+	    
+		rs.close();
+	    stmt.close();
+	    con.close();
+		
+	    return true;
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		LoadDataCsvToTable abc= new LoadDataCsvToTable();
+		abc.loadCSVFileToTable(propFileName, fileName, "PRODUCT.ORDER_MEDIA")
+		
+	}
+
+}

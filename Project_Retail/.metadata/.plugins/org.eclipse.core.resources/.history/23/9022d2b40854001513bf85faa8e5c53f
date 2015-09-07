@@ -1,0 +1,20 @@
+package com.cts.retail.jdbc;
+
+public class LoadDataCsvToTable {
+
+	public LoadDataCsvToTable() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public boolean loadCSVFileToTable(){
+		return false;
+		
+	}
+	
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
